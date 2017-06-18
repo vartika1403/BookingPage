@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+
 import butterknife.ButterKnife;
 
-
-public class FirstDateBookingSlot extends Fragment implements FragmentChangeListener {
+public class FirstDateBookingSlot extends Fragment implements FragmentChangeListener,
+        RecyclerViewExpandableItemManager.OnGroupCollapseListener,
+        RecyclerViewExpandableItemManager.OnGroupExpandListener {
     private static final String LOG_TAG = FirstDateBookingSlot.class.getSimpleName();
 
     @Override
@@ -50,6 +53,16 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
 
     @Override
     public void onScrollFragment(int position, int offset) {
+
+    }
+
+    @Override
+    public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
+
+    }
+
+    @Override
+    public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
 
     }
 }

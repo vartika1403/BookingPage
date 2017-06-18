@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FourthDateBookingSlot extends Fragment implements FragmentChangeListener {
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+
+public class FourthDateBookingSlot extends Fragment implements FragmentChangeListener,
+        RecyclerViewExpandableItemManager.OnGroupCollapseListener,
+        RecyclerViewExpandableItemManager.OnGroupExpandListener {
 
     public FourthDateBookingSlot() {
         // Required empty public constructor
@@ -49,6 +53,16 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
 
     @Override
     public void onScrollFragment(int position, int offset) {
+
+    }
+
+    @Override
+    public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
+
+    }
+
+    @Override
+    public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
 
     }
 }
