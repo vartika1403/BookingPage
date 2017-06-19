@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.vartikasharma.bookingpage.FourthDateBookingSlot">
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/fouth_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

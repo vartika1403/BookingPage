@@ -4,15 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
+import butterknife.BindView;
+
 public class SecondDateBookingSlot extends Fragment implements FragmentChangeListener,
         RecyclerViewExpandableItemManager.OnGroupCollapseListener,
         RecyclerViewExpandableItemManager.OnGroupExpandListener {
+    private static final String LOG_TAG = FirstDateBookingSlot.class.getSimpleName();
+
+    @BindView(R.id.second_recycler_view)
+    RecyclerView secondRecyclerView;
 
     public SecondDateBookingSlot() {
         // Required empty public constructor

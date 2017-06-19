@@ -1,6 +1,7 @@
 package com.example.vartikasharma.bookingpage;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -133,6 +134,5 @@ public class MainActivity extends AppCompatActivity {
         bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("20"));
         bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("21"));
         bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("22"));
-
     }
 }
