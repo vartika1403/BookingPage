@@ -55,38 +55,28 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(final Call<JsonElement> call, Response<JsonElement> response) {
-
-
                 final GsonBuilder gsonBuilder = new GsonBuilder();
                 final Gson gson = gsonBuilder.create();
                 Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().toString());
                 String resonseArray = "[" + response.body().getAsJsonObject().toString() + "]";
                 Log.i(LOG_TAG, "responseArray, " + response.body().getAsJsonObject().get("slots"));
                // response.body().getAsJsonObject().get("slots");
-              //  BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString() , BookingSlot.class);
+               BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString() , BookingSlot.class);
+                Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         setUpTabLayout();
                         setUpViewPager(viewPager);
                         bookingSlotTabLayout.setupWithViewPager(viewPager);
-
                     }
                 });
-
-             //  List<SlotDateObject> slotDateObjectList = bookingSlot.getSlots();
-               // Log.i(LOG_TAG, "slotList, " + slotDateObjectList);
-
-                //  List<SlotDateObject> slotDateObjectList = response.body().getSlots();
-                //Log.i(LOG_TAG, "slotDateObject, " + slotDateObjectList);
             }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
 
             }
-
-
         });
     }
 

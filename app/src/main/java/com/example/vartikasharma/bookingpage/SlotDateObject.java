@@ -1,34 +1,16 @@
 package com.example.vartikasharma.bookingpage;
 
 
-import java.util.List;
+import java.util.HashMap;
 
 public class SlotDateObject {
-    private List<SlotItem> afternoon;
-    private List<SlotItem> evening;
-    private List<SlotItem> morning;
+    private HashMap<String, SlotTimeObject> slotTimeObjectHashMap = new HashMap<String, SlotTimeObject>();
 
-    public List<SlotItem> getAfternoon() {
-        return afternoon;
+    public HashMap<String, SlotTimeObject> getSlotTimeObjectHashMap() {
+        return slotTimeObjectHashMap;
     }
 
-    public void setAfternoon(List<SlotItem> afternoon) {
-        this.afternoon = afternoon;
-    }
-
-    public List<SlotItem> getEvening() {
-        return evening;
-    }
-
-    public void setEvening(List<SlotItem> evening) {
-        this.evening = evening;
-    }
-
-    public List<SlotItem> getMorning() {
-        return morning;
-    }
-
-    public void setMorning(List<SlotItem> morning) {
-        this.morning = morning;
+    public void setSlotTimeObjectHashMap(HashMap<String, SlotTimeObject> slotTimeObjectHashMap) {
+        this.slotTimeObjectHashMap = slotTimeObjectHashMap;
     }
 }
