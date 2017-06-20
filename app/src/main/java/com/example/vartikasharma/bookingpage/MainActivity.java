@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().toString());
                 String resonseArray = "[" + response.body().getAsJsonObject().toString() + "]";
                 Log.i(LOG_TAG, "responseArray, " + response.body().getAsJsonObject().get("slots"));
-               // response.body().getAsJsonObject().get("slots");
-               BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString() , BookingSlot.class);
+                // response.body().getAsJsonObject().get("slots");
+                BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString(), BookingSlot.class);
                 Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
-               final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
-                Log.i(LOG_TAG, "slotDate, " +  slotDateObjectHashMap);
-               //SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
-               // Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
+                final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
+                Log.i(LOG_TAG, "slotDate, " + slotDateObjectHashMap);
+                //SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
+                // Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
                 setUpViewPager(viewPager, slotDateObjectHashMap);
                 bookingSlotTabLayout.setupWithViewPager(viewPager);
 
@@ -108,14 +108,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager, HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) {
         List<String> mapKey = new ArrayList<>();
-        for(String date: slotDateObjectHashMap.keySet()) {
+        for (String date : slotDateObjectHashMap.keySet()) {
             mapKey.add(date);
         }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-            viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
-           viewPagerAdapter.addFrag(new SecondDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(1))), "second");
-            viewPagerAdapter.addFrag(new ThirdDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(2))), "third");
-            viewPagerAdapter.addFrag(new FourthDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(3))), "fourth");
+        viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
+        viewPagerAdapter.addFrag(new SecondDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(1))), "second");
+        viewPagerAdapter.addFrag(new ThirdDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(2))), "third");
+        viewPagerAdapter.addFrag(new FourthDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(3))), "fourth");
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.requestTransparentRegion(viewPager);
@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpTabLayout(HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) throws ParseException {
         // Add Tab
-        SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
      /*  HashMap.Entry<String, Map<String, List<SlotItem>>> entrySet  = (HashMap.Entry<String, Map<String, List<SlotItem>>>) slotDateObjectHashMap.entrySet();
         String date = entrySet.getKey().toString();
         Log.i(LOG_TAG,"firstDate, " + date);
@@ -159,15 +158,24 @@ public class MainActivity extends AppCompatActivity {
         String month_name = month_date.format(dateValue);
         Log.i(LOG_TAG, "monthName, " + month_name);
         monthNameText.setText(month_name);*/
+        Map.Entry<String, HashMap<String, List<SlotItem>>> entry = slotDateObjectHashMap.entrySet().iterator().next();
+        String key = entry.getKey();
+        Log.i(LOG_TAG, "key, " + key);
+        Date dateValue = new SimpleDateFormat("yyyy-MM-dd").parse(key);
+        SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
+        String month_name = month_date.format(dateValue);
+        Log.i(LOG_TAG, "monthName, " + month_name);
+        monthNameText.setText(month_name);
 
-        int i =0;
-        for(String dateText: slotDateObjectHashMap.keySet()) {
+
+        int i = 0;
+        for (String dateText : slotDateObjectHashMap.keySet()) {
             View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
             TextView tabDayName = (TextView) tabOne.findViewById(R.id.tab_day_name_text);
-            Date dateName = new SimpleDateFormat("yyyy-mm-dd").parse(dateText);
+            Date dateName = new SimpleDateFormat("yyyy-MM-dd").parse(dateText);
             String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateName);
-            Log.i(LOG_TAG, "dayOfweek, " +dayOfWeek);
+            Log.i(LOG_TAG, "dayOfweek, " + dayOfWeek);
             String dateOfWeek = new SimpleDateFormat("dd", Locale.ENGLISH).format(dateName);
             Log.i(LOG_TAG, "dateOfWeek, " + dateOfWeek);
             tabDayName.setText(dayOfWeek);
