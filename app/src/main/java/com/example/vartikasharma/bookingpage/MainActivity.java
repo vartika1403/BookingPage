@@ -12,6 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -63,11 +68,15 @@ public class MainActivity extends AppCompatActivity {
                // response.body().getAsJsonObject().get("slots");
                BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString() , BookingSlot.class);
                 Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
+               final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
+                Log.i(LOG_TAG, "slotDate, " +  slotDateObjectHashMap);
+               SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
+                Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        setUpViewPager(viewPager, slotDateObjectHashMap);
                         setUpTabLayout();
-                        setUpViewPager(viewPager);
                         bookingSlotTabLayout.setupWithViewPager(viewPager);
                     }
                 });
@@ -80,12 +89,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpViewPager(ViewPager viewPager) {
+    private void setUpViewPager(ViewPager viewPager, HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) {
+        List<String> mapKey = new ArrayList<>();
+        for(String date: slotDateObjectHashMap.keySet()) {
+            mapKey.add(date);
+        }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFrag(new FirstDateBookingSlot(), "first");
-        viewPagerAdapter.addFrag(new SecondDateBookingSlot(), "second");
-        viewPagerAdapter.addFrag(new ThirdDateBookingSlot(), "third");
-        viewPagerAdapter.addFrag(new FourthDateBookingSlot(), "fourth");
+            viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
+           viewPagerAdapter.addFrag(new SecondDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(1))), "second");
+            viewPagerAdapter.addFrag(new ThirdDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(2))), "third");
+            viewPagerAdapter.addFrag(new FourthDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(3))), "fourth");
+
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.requestTransparentRegion(viewPager);
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {

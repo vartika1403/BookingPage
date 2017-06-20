@@ -24,10 +24,10 @@ public class ExpandableAdapter extends
 
     private AbstractExpandableDataProvider provider;
     private List<String> slots = new ArrayList<>();
-    private HashMap<String, List<String>> childItems = new HashMap<>();
+    private HashMap<String, List<SlotItem>> childItems = new HashMap<>();
     private RecyclerViewExpandableItemManager mExpandableItemManager;
 
-    public ExpandableAdapter(RecyclerViewExpandableItemManager recyclerViewExpandableItemManager, List<String> slots, HashMap<String, List<String>> childItems) {
+    public ExpandableAdapter(RecyclerViewExpandableItemManager recyclerViewExpandableItemManager, List<String> slots, HashMap<String, List<SlotItem>> childItems) {
 
         this.slots = slots;
         this.childItems = childItems;
@@ -115,9 +115,9 @@ public class ExpandableAdapter extends
     @Override
     public void onBindChildViewHolder(MyChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // group item
-        final String item = childItems.get(slots.get(groupPosition)).get(childPosition);
+        final SlotItem item = childItems.get(slots.get(groupPosition)).get(childPosition);
         // set text
-        holder.mTextView.setText(item);
+        holder.mTextView.setText(" " + item.getSlot_id());
 
         // set background resource (target view ID: container)
         int bgResId;

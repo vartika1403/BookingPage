@@ -2,7 +2,6 @@ package com.example.vartikasharma.bookingpage;
 
 import android.content.Context;
 import android.graphics.drawable.NinePatchDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -34,17 +33,16 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
     private static final String LOG_TAG = FourthDateBookingSlot.class.getSimpleName();
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
-    private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter wrappedAdapter;
-    private AbstractExpandableDataProvider abstractExpandableDataProvider;
-    private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
-
+    private RecyclerView.LayoutManager fourthLayoutManager;
+    private RecyclerView.Adapter fourthWrappedAdapter;
+    private RecyclerViewExpandableItemManager fourthRecyclerViewExpandableItemManager;
+    private HashMap<String, List<SlotItem>> slotFourthDateItems;
 
     @BindView(R.id.fouth_recycler_view)
     RecyclerView fourthRecyclerView;
 
-    public FourthDateBookingSlot() {
-        // Required empty public constructor
+    public FourthDateBookingSlot(HashMap<String, List<SlotItem>> slotFourthDateItems) {
+        this.slotFourthDateItems = slotFourthDateItems;
     }
 
     @Override
@@ -58,28 +56,28 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_fourth_date_booking_slot, container, false);
         ButterKnife.bind(this,view);
-        layoutManager = new LinearLayoutManager(getContext());
+        fourthLayoutManager = new LinearLayoutManager(getContext());
 
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
-        recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        recyclerViewExpandableItemManager.setOnGroupExpandListener(this);
-        recyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
+        fourthRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
+        fourthRecyclerViewExpandableItemManager.setOnGroupExpandListener(this);
+        fourthRecyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
-        //adapter
-        AbstractExpandableDataProvider abstractExpandableDataProvider;
         List<String> slots = new ArrayList<String>();
-        slots.add("Morning");
-        slots.add("Evening");
-        List<String> morningData = new ArrayList<>();
+        //   slots.add("Morning");
+        // slots.add("Evening");
+       /* List<String> morningData = new ArrayList<>();
         morningData.add("1");
-        morningData.add("2");
-        HashMap<String, List<String>> childItems = new HashMap<>();
-        childItems.put(slots.get(0), morningData);
-        childItems.put(slots.get(1), morningData);
+        morningData.add("2");*/
+        HashMap<String, List<SlotItem>> childItems = new HashMap<>();
+        for(String slot: slotFourthDateItems.keySet()) {
+            slots.add(slot);
+            childItems.put(slot, slotFourthDateItems.get(slot));
+            // childItems.put(slots.get(1), morningData);
+        }
+        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(fourthRecyclerViewExpandableItemManager,slots, childItems);
 
-        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(recyclerViewExpandableItemManager,slots, childItems);
-
-        wrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);       // wrap for expanding
+        fourthWrappedAdapter = fourthRecyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);       // wrap for expanding
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
@@ -87,8 +85,8 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
         // Need to disable them when using animation indicator.
         animator.setSupportsChangeAnimations(false);
 
-        fourthRecyclerView.setLayoutManager(layoutManager);
-        fourthRecyclerView.setAdapter(wrappedAdapter);  // requires *wrapped* adapter
+        fourthRecyclerView.setLayoutManager(fourthLayoutManager);
+        fourthRecyclerView.setAdapter(fourthWrappedAdapter);  // requires *wrapped* adapter
         fourthRecyclerView.setItemAnimator(animator);
         fourthRecyclerView.setHasFixedSize(false);
 
@@ -101,7 +99,7 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
         }
         fourthRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
 
-        recyclerViewExpandableItemManager.attachRecyclerView(fourthRecyclerView);
+        fourthRecyclerViewExpandableItemManager.attachRecyclerView(fourthRecyclerView);
 
         return view;
     }
@@ -111,10 +109,10 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
         super.onSaveInstanceState(outState);
 
         // save current state to support screen rotation, etc...
-        if (recyclerViewExpandableItemManager != null) {
+        if (fourthRecyclerViewExpandableItemManager != null) {
             outState.putParcelable(
                     SAVED_STATE_EXPANDABLE_ITEM_MANAGER,
-                    recyclerViewExpandableItemManager.getSavedState());
+                    fourthRecyclerViewExpandableItemManager.getSavedState());
         }
     }
 
@@ -130,9 +128,9 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
 
     @Override
     public void onDestroyView() {
-        if (recyclerViewExpandableItemManager != null) {
-            recyclerViewExpandableItemManager.release();
-            recyclerViewExpandableItemManager = null;
+        if (fourthRecyclerViewExpandableItemManager != null) {
+            fourthRecyclerViewExpandableItemManager.release();
+            fourthRecyclerViewExpandableItemManager = null;
         }
 
         if (fourthRecyclerView != null) {
@@ -141,11 +139,11 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
             fourthRecyclerView = null;
         }
 
-        if (wrappedAdapter != null) {
-            WrapperAdapterUtils.releaseAll(wrappedAdapter);
-            wrappedAdapter = null;
+        if (fourthWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(fourthWrappedAdapter);
+            fourthWrappedAdapter = null;
         }
-        layoutManager = null;
+        fourthLayoutManager = null;
 
         super.onDestroyView();
     }
@@ -180,16 +178,16 @@ public class FourthDateBookingSlot extends Fragment implements FragmentChangeLis
         int topMargin = (int) (getActivity().getResources().getDisplayMetrics().density * 16); // top-spacing: 16dp
         int bottomMargin = topMargin; // bottom-spacing: 16dp
 
-        recyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
+        fourthRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
     }
 
     private boolean supportsViewElevation() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
 
-    public AbstractExpandableDataProvider getDataProvider() {
+   /* public AbstractExpandableDataProvider getDataProvider() {
         return abstractExpandableDataProvider;
        // return ((MainActivity) getActivity()).getDataProvider();
 
-    }
+    }*/
 }
