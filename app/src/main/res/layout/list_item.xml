@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
     <!-- NOTE: should use FrameLayout or RelativeLayout for parent of the "@id/container" view (for Android 2.3 compatibility) -->
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,12 +16,12 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@android:id/text1"
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|left"
             android:gravity="center"
             tools:ignore="RtlHardcoded"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
@@ -22,9 +23,9 @@ public class ExpandableAdapter extends
                 ExpandableAdapter.MyChildViewHolder> {
     private static final String LOG_TAG = ExpandableAdapter.class.getSimpleName();
 
-    private AbstractExpandableDataProvider provider;
     private List<String> slots = new ArrayList<>();
     private HashMap<String, List<SlotItem>> childItems = new HashMap<>();
+    private int availableSlots = 0;
     private RecyclerViewExpandableItemManager mExpandableItemManager;
 
     public ExpandableAdapter(RecyclerViewExpandableItemManager recyclerViewExpandableItemManager, List<String> slots, HashMap<String, List<SlotItem>> childItems) {
@@ -34,6 +35,14 @@ public class ExpandableAdapter extends
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
+        for(int i = 0; i < slots.size(); i++) {
+            List<SlotItem> slotItemList = childItems.get(slots.get(i));
+            for (int j = 0; j <slotItemList.size(); j++) {
+                if (!slotItemList.get(j).is_booked() || !slotItemList.get(j).is_expired()) {
+                    availableSlots++;
+                }
+            }
+        }
     }
 
     @Override
@@ -87,6 +96,7 @@ public class ExpandableAdapter extends
 
         // set text
         holder.mTextView.setText(item);
+        holder.slotNoText.setText(" " + availableSlots + " " + "Slots available");
 
         // mark as clickable
         holder.itemView.setClickable(true);
@@ -127,12 +137,6 @@ public class ExpandableAdapter extends
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(MyGroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
-        // check the item is *not* pinned
-        /*if (provider.getGroupItem(groupPosition).isPinned()) {
-            // return false to raise View.OnClickListener#onClick() event
-            return false;
-        }
-*/
         // check is enabled
         if (!(holder.itemView.isEnabled() && holder.itemView.isClickable())) {
             return false;
@@ -146,13 +150,15 @@ public class ExpandableAdapter extends
     }
 
     public static abstract class MyBaseViewHolder extends AbstractExpandableItemViewHolder {
-        public FrameLayout mContainer;
+        public RelativeLayout mContainer;
         public TextView mTextView;
+        public TextView slotNoText;
 
         public MyBaseViewHolder(View v) {
             super(v);
-            mContainer = (FrameLayout) v.findViewById(R.id.container);
-            mTextView = (TextView) v.findViewById(android.R.id.text1);
+            mContainer = (RelativeLayout) v.findViewById(R.id.container);
+            mTextView = (TextView) v.findViewById(R.id.text1);
+            slotNoText = (TextView) v.findViewById(R.id.slot_no_text);
         }
     }
 

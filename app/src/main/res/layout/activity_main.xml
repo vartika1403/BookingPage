@@ -7,17 +7,24 @@
     android:layout_height="match_parent"
     tools:context="com.example.vartikasharma.bookingpage.MainActivity">
 
+    <TextView
+        android:id="@+id/month_name"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="80dp"
         android:layout_marginLeft="-10dp"
         android:layout_marginRight="-10dp"
         android:layout_marginTop="2dp"
         android:background="#F7F3E2"
         android:clipToPadding="false"
         app:tabGravity="fill"
-        app:tabIndicatorHeight="0dp"
+        app:tabIndicatorHeight="2dp"
         app:tabMaxWidth="0dp"
         app:tabMinWidth="50dp"
         app:tabMode="fixed"

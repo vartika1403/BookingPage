@@ -38,6 +38,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
     private RecyclerView.Adapter firstWrappedAdapter;
     private RecyclerViewExpandableItemManager firstRecyclerViewExpandableItemManager;
     private HashMap<String, List<SlotItem>> slotFirstDateItems;
+    private int availableSlotNo;
 
 
     @BindView(R.id.first_recycler_view)

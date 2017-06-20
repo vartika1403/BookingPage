@@ -6,15 +6,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -37,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.pager)
     /* package-local */ ViewPager viewPager;
+
+    @BindView(R.id.month_name)
+    /* package-local */ TextView monthNameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +82,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
                final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
                 Log.i(LOG_TAG, "slotDate, " +  slotDateObjectHashMap);
-               SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
-                Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
+               //SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
+               // Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
+                setUpViewPager(viewPager, slotDateObjectHashMap);
+                bookingSlotTabLayout.setupWithViewPager(viewPager);
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setUpViewPager(viewPager, slotDateObjectHashMap);
-                        setUpTabLayout();
-                        bookingSlotTabLayout.setupWithViewPager(viewPager);
+                        try {
+                            setUpTabLayout(slotDateObjectHashMap);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -132,11 +149,33 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(onPageChangeListener);
     }
 
-    private void setUpTabLayout() {
+    private void setUpTabLayout(HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) throws ParseException {
         // Add Tab
-        bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("19"));
-        bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("20"));
-        bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("21"));
-        bookingSlotTabLayout.addTab(bookingSlotTabLayout.newTab().setText("22"));
+        SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
+     /*  HashMap.Entry<String, Map<String, List<SlotItem>>> entrySet  = (HashMap.Entry<String, Map<String, List<SlotItem>>>) slotDateObjectHashMap.entrySet();
+        String date = entrySet.getKey().toString();
+        Log.i(LOG_TAG,"firstDate, " + date);
+        Date dateValue = new SimpleDateFormat("yyyy-mm-dd").parse(date);
+        String month_name = month_date.format(dateValue);
+        Log.i(LOG_TAG, "monthName, " + month_name);
+        monthNameText.setText(month_name);*/
+
+        int i =0;
+        for(String dateText: slotDateObjectHashMap.keySet()) {
+            View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+            TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
+            TextView tabDayName = (TextView) tabOne.findViewById(R.id.tab_day_name_text);
+            Date dateName = new SimpleDateFormat("yyyy-mm-dd").parse(dateText);
+            String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateName);
+            Log.i(LOG_TAG, "dayOfweek, " +dayOfWeek);
+            String dateOfWeek = new SimpleDateFormat("dd", Locale.ENGLISH).format(dateName);
+            Log.i(LOG_TAG, "dateOfWeek, " + dateOfWeek);
+            tabDayName.setText(dayOfWeek);
+            tabText.setText(dateOfWeek);
+
+            // tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favourite, 0, 0);
+            bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);
+            i++;
+        }
     }
 }
