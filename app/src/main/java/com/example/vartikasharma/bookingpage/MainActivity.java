@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
         String month_name = month_date.format(dateValue);
         monthNameText.setText(month_name);
-        int i = slotDateObjectHashMap.size() -1;
+        int i = 0;
         for (String dateText : slotDateObjectHashMap.keySet()) {
             View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             tabDayName.setText(dayOfWeek);
             tabText.setText(dateOfWeek);
             bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);
-            i--;
+            i++;
         }
     }
 }
