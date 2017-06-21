@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < slotDateObjectHashMap.size(); i++) {
-            viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(i))), mapKey.get(i));
+            viewPagerAdapter.addFrag(new DateBookingSlot(slotDateObjectHashMap.get(mapKey.get(i))), mapKey.get(i));
         }
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.requestTransparentRegion(viewPager);

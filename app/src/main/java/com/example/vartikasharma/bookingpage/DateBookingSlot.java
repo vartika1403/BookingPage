@@ -28,10 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FirstDateBookingSlot extends Fragment implements FragmentChangeListener,
+public class DateBookingSlot extends Fragment implements FragmentChangeListener,
         RecyclerViewExpandableItemManager.OnGroupCollapseListener,
         RecyclerViewExpandableItemManager.OnGroupExpandListener {
-    private static final String LOG_TAG = FirstDateBookingSlot.class.getSimpleName();
+    private static final String LOG_TAG = DateBookingSlot.class.getSimpleName();
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
     @BindView(R.id.first_recycler_view)
     RecyclerView firstRecyclerView;
@@ -40,7 +40,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
     private RecyclerViewExpandableItemManager firstRecyclerViewExpandableItemManager;
     private HashMap<String, List<SlotItem>> slotFirstDateItems;
 
-    public FirstDateBookingSlot(HashMap<String, List<SlotItem>> slotFirstDateItems) {
+    public DateBookingSlot(HashMap<String, List<SlotItem>> slotFirstDateItems) {
         this.slotFirstDateItems = slotFirstDateItems;
     }
 
