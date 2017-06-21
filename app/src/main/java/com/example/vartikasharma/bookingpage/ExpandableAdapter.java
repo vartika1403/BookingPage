@@ -1,10 +1,13 @@
 package com.example.vartikasharma.bookingpage;
 
 
+import android.graphics.drawable.Animatable;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -111,19 +114,15 @@ public class ExpandableAdapter extends
 
         if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
             int bgResId;
-            boolean isExpanded;
+            boolean isExpanded = false;
             boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
 
             if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
-                bgResId = R.drawable.bg_group_item_expanded_state;
-                isExpanded = true;
+                holder.arrowImage.animate().rotation(180).start();
             } else {
                 bgResId = R.drawable.bg_group_item_normal_state;
-                isExpanded = false;
+                holder.arrowImage.animate().rotation(0).start();;
             }
-
-            holder.mContainer.setBackgroundResource(bgResId);
-            holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
         }
     }
 
@@ -154,9 +153,9 @@ public class ExpandableAdapter extends
 
 
         // set background resource (target view ID: container)
-        int bgResId;
+      /*  int bgResId;
         bgResId = R.drawable.bg_item_normal_state;
-        holder.mContainer.setBackgroundResource(bgResId);
+        holder.mContainer.setBackgroundResource(bgResId);*/
     }
 
     @Override
@@ -175,23 +174,25 @@ public class ExpandableAdapter extends
 
     public static abstract class MyBaseViewHolder extends AbstractExpandableItemViewHolder {
         public RelativeLayout mContainer;
+        public ImageView morningSnackImage;
         public TextView mTextView;
         public TextView slotNoText;
 
         public MyBaseViewHolder(View v) {
             super(v);
             mContainer = (RelativeLayout) v.findViewById(R.id.container);
+            morningSnackImage = (ImageView) v.findViewById(R.id.morning_snack_image);
             mTextView = (TextView) v.findViewById(R.id.text1);
             slotNoText = (TextView) v.findViewById(R.id.slot_no_text);
         }
     }
 
     public static class MyGroupViewHolder extends MyBaseViewHolder {
-        public ExpandableItemIndicator mIndicator;
+        public ImageView arrowImage;
 
         public MyGroupViewHolder(View v) {
             super(v);
-            mIndicator = (ExpandableItemIndicator) v.findViewById(R.id.indicator);
+            arrowImage = (ImageView) v.findViewById(R.id.arrow_image);
         }
     }
 

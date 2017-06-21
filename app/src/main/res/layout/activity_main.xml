@@ -5,13 +5,15 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/available_slot_background"
     tools:context="com.example.vartikasharma.bookingpage.MainActivity">
 
     <TextView
         android:id="@+id/month_name"
-        android:layout_marginTop="5dp"
-        android:background="@color/available_slot_background"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -27,6 +29,7 @@
         android:clipToPadding="false"
         app:tabGravity="fill"
         app:tabIndicatorHeight="2dp"
+        app:tabIndicatorColor="@color/red_color_background"
         app:tabMaxWidth="0dp"
         app:tabMinWidth="50dp"
         app:tabMode="fixed"
@@ -40,7 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@id/tabLayout"
-        android:background="#D3D3D3"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </RelativeLayout>
