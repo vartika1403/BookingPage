@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
@@ -32,8 +31,7 @@ public class ExpandableAdapter extends
     private int availableSlots = 0;
     private HashMap<String, Integer> availableSlotNo = new HashMap<>();
 
-    public ExpandableAdapter(RecyclerViewExpandableItemManager recyclerViewExpandableItemManager, List<String> slots, HashMap<String, List<SlotItem>> childItems) {
-
+    public ExpandableAdapter(List<String> slots, HashMap<String, List<SlotItem>> childItems) {
         this.slots = slots;
         this.childItems = childItems;
         setHasStableIds(true);

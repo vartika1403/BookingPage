@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     private final static String API_KEY = "a4aeb4e27f27b5786828f6cdf00d8d2cb44fe6d7";
     private final static int VC = 276;
     private final static String USER_NAME = "alok@x.coz";
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initToolBar();
+
 
         if (API_KEY.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please obtain your API KEY first from themoviedb.org", Toast.LENGTH_LONG).show();
@@ -66,13 +68,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(final Call<JsonElement> call, Response<JsonElement> response) {
                 final GsonBuilder gsonBuilder = new GsonBuilder();
                 final Gson gson = gsonBuilder.create();
-                Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().toString());
-                String resonseArray = "[" + response.body().getAsJsonObject().toString() + "]";
-                Log.i(LOG_TAG, "responseArray, " + response.body().getAsJsonObject().get("slots"));
                 BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString(), BookingSlot.class);
-                Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
                 final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
-                Log.i(LOG_TAG, "slotDate, " + slotDateObjectHashMap);
                 setUpViewPager(viewPager, slotDateObjectHashMap);
                 bookingSlotTabLayout.setupWithViewPager(viewPager);
 
@@ -95,6 +92,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        // toolbar.setTitle(R.string.toolbarTitle);
+        setSupportActionBar(toolbar);
+        // add back arrow to toolbar
+        // toolbar.setNavigationIcon();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+        //toolbar.setNavigationIcon(R.drawable.ic_toolbar_arrow);
+
+
+
     private void setUpViewPager(ViewPager viewPager, HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) {
         List<String> mapKey = new ArrayList<>();
         for (String date : slotDateObjectHashMap.keySet()) {
@@ -102,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < slotDateObjectHashMap.size(); i++) {
-            Log.i(LOG_TAG, "size, " + slotDateObjectHashMap.size());
             viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(i))), mapKey.get(i));
         }
         viewPager.setAdapter(viewPagerAdapter);
@@ -112,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d(LOG_TAG, "onPageScrolled called: " + position + " " + positionOffset + " " + positionOffsetPixels);
                 FragmentChangeListener fragmentShown = (FragmentChangeListener) viewPagerAdapter.getItem(1);
                 fragmentShown.onScrollFragment(position, positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.d(LOG_TAG, "onPageSelected called");
                 FragmentChangeListener fragmentShown = (FragmentChangeListener) viewPagerAdapter.getItem(position);
                 fragmentShown.onShowFragment();
 
@@ -140,11 +156,9 @@ public class MainActivity extends AppCompatActivity {
     private void setUpTabLayout(HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) throws ParseException {
         Map.Entry<String, HashMap<String, List<SlotItem>>> entry = slotDateObjectHashMap.entrySet().iterator().next();
         String key = entry.getKey();
-        Log.i(LOG_TAG, "key, " + key);
         Date dateValue = new SimpleDateFormat("yyyy-MM-dd").parse(key);
         SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
         String month_name = month_date.format(dateValue);
-        Log.i(LOG_TAG, "monthName, " + month_name);
         monthNameText.setText(month_name);
         int i = 0;
         for (String dateText : slotDateObjectHashMap.keySet()) {
@@ -153,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
             TextView tabDayName = (TextView) tabOne.findViewById(R.id.tab_day_name_text);
             Date dateName = new SimpleDateFormat("yyyy-MM-dd").parse(dateText);
             String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateName);
-            Log.i(LOG_TAG, "dayOfweek, " + dayOfWeek);
             String dateOfWeek = new SimpleDateFormat("dd", Locale.ENGLISH).format(dateName);
-            Log.i(LOG_TAG, "dateOfWeek, " + dateOfWeek);
             tabDayName.setText(dayOfWeek);
             tabText.setText(dateOfWeek);
             bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);

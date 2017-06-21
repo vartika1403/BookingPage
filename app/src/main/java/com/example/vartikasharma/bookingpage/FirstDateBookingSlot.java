@@ -53,7 +53,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_for19_booking_slot, container, false);
+        View view = inflater.inflate(R.layout.fragment_for_booking_slot, container, false);
         ButterKnife.bind(this, view);
         firstLayoutManager = new LinearLayoutManager(getContext());
 
@@ -69,7 +69,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
             childItems.put(slot, slotFirstDateItems.get(slot));
         }
 
-        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(firstRecyclerViewExpandableItemManager, slots, childItems);
+        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(slots, childItems);
 
         firstWrappedAdapter = firstRecyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);       // wrap for expanding
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();

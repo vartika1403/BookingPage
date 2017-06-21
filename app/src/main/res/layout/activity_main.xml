@@ -8,9 +8,15 @@
     android:background="@color/available_slot_background"
     tools:context="com.example.vartikasharma.bookingpage.MainActivity">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
+
     <TextView
         android:id="@+id/month_name"
         android:textStyle="bold"
+        android:layout_below="@id/tool_bar"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_marginTop="10dp"

@@ -18,11 +18,12 @@
             android:id="@+id/morning_snack_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:foregroundGravity="center"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/circle_background"
-            android:src="@drawable/morning_snack" />
+            android:background="@drawable/circular_morning_snack"
+             />
 
         <TextView
             android:id="@+id/text1"
