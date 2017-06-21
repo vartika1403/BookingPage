@@ -33,20 +33,17 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
         RecyclerViewExpandableItemManager.OnGroupExpandListener {
     private static final String LOG_TAG = FirstDateBookingSlot.class.getSimpleName();
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
-
+    @BindView(R.id.first_recycler_view)
+    RecyclerView firstRecyclerView;
     private RecyclerView.LayoutManager firstLayoutManager;
     private RecyclerView.Adapter firstWrappedAdapter;
     private RecyclerViewExpandableItemManager firstRecyclerViewExpandableItemManager;
     private HashMap<String, List<SlotItem>> slotFirstDateItems;
-    private int availableSlotNo;
-
-
-    @BindView(R.id.first_recycler_view)
-    RecyclerView firstRecyclerView;
 
     public FirstDateBookingSlot(HashMap<String, List<SlotItem>> slotFirstDateItems) {
         this.slotFirstDateItems = slotFirstDateItems;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +54,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_for19_booking_slot, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         firstLayoutManager = new LinearLayoutManager(getContext());
 
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
@@ -66,26 +63,16 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
         firstRecyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
         List<String> slots = new ArrayList<String>();
-     //   slots.add("Morning");
-       // slots.add("Evening");
-       /* List<String> morningData = new ArrayList<>();
-        morningData.add("1");
-        morningData.add("2");*/
         HashMap<String, List<SlotItem>> childItems = new HashMap<>();
-        for(String slot: slotFirstDateItems.keySet()) {
+        for (String slot : slotFirstDateItems.keySet()) {
             slots.add(slot);
             childItems.put(slot, slotFirstDateItems.get(slot));
-           // childItems.put(slots.get(1), morningData);
         }
 
-        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(firstRecyclerViewExpandableItemManager,slots, childItems);
+        final ExpandableAdapter myItemAdapter = new ExpandableAdapter(firstRecyclerViewExpandableItemManager, slots, childItems);
 
         firstWrappedAdapter = firstRecyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);       // wrap for expanding
-
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
-
-        // Change animations are enabled by default since support-v7-recyclerview v22.
-        // Need to disable them when using animation indicator.
         animator.setSupportsChangeAnimations(false);
 
         firstRecyclerView.setLayoutManager(firstLayoutManager);
@@ -93,15 +80,12 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
         firstRecyclerView.setItemAnimator(animator);
         firstRecyclerView.setHasFixedSize(false);
 
-        // additional decorations
-        //noinspection StatementWithEmptyBody
         if (supportsViewElevation()) {
             // Lollipop or later has native drop shadow feature. ItemShadowDecorator is not required.
         } else {
             firstRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
         }
         firstRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
-
         firstRecyclerViewExpandableItemManager.attachRecyclerView(firstRecyclerView);
 
         return view;
@@ -177,16 +161,7 @@ public class FirstDateBookingSlot extends Fragment implements FragmentChangeList
 
     }
 
-    private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
-        int childItemHeight = getActivity().getResources().getDimensionPixelSize(R.dimen.list_item_height);
-        int topMargin = (int) (getActivity().getResources().getDisplayMetrics().density * 16); // top-spacing: 16dp
-        int bottomMargin = topMargin; // bottom-spacing: 16dp
-
-        firstRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
-    }
-
     private boolean supportsViewElevation() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
-
 }

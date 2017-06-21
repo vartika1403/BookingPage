@@ -1,8 +1,5 @@
 package com.example.vartikasharma.bookingpage;
 
-
-import android.graphics.drawable.Animatable;
-import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +37,9 @@ public class ExpandableAdapter extends
         this.slots = slots;
         this.childItems = childItems;
         setHasStableIds(true);
-        for(int i = 0; i < slots.size(); i++) {
+        for (int i = 0; i < slots.size(); i++) {
             List<SlotItem> slotItemList = childItems.get(slots.get(i));
-            for (int j = 0; j <slotItemList.size(); j++) {
+            for (int j = 0; j < slotItemList.size(); j++) {
                 if (!slotItemList.get(j).is_booked() || !slotItemList.get(j).is_expired()) {
                     availableSlots++;
                 }
@@ -59,7 +56,7 @@ public class ExpandableAdapter extends
 
     @Override
     public int getChildCount(int groupPosition) {
-       return childItems.get(slots.get(groupPosition)).size();
+        return childItems.get(slots.get(groupPosition)).size();
     }
 
     @Override
@@ -102,8 +99,8 @@ public class ExpandableAdapter extends
         final String item = slots.get(groupPosition);
 
         // set text
-        String stringText = item.substring(0,1).toUpperCase() + item.substring(1);
-        holder.mTextView.setText(stringText) ;
+        String stringText = item.substring(0, 1).toUpperCase() + item.substring(1);
+        holder.mTextView.setText(stringText);
         holder.slotNoText.setText(" " + availableSlotNo.get(item) + " " + "Slots available");
 
         // mark as clickable
@@ -113,15 +110,11 @@ public class ExpandableAdapter extends
         final int expandState = holder.getExpandStateFlags();
 
         if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
-            int bgResId;
-            boolean isExpanded = false;
-            boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
-
             if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
                 holder.arrowImage.animate().rotation(180).start();
             } else {
-                bgResId = R.drawable.bg_group_item_normal_state;
-                holder.arrowImage.animate().rotation(0).start();;
+                holder.arrowImage.animate().rotation(0).start();
+                ;
             }
         }
     }
@@ -135,8 +128,8 @@ public class ExpandableAdapter extends
             String strDateFormat = "hh:mm:ss a";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(strDateFormat);
             Date startDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss+00:00", Locale.US).parse(item.getStart_time());
-            String startTime =  simpleDateFormat.format(startDateTime);
-            Log.i(LOG_TAG, "start time, "  + startTime);
+            String startTime = simpleDateFormat.format(startDateTime);
+            Log.i(LOG_TAG, "start time, " + startTime);
             Log.i(LOG_TAG, "startDateTime, " + startDateTime.getTime());
             Date endDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss+00:00", Locale.US).parse(item.getEnd_time());
             String endTime = simpleDateFormat.format(endDateTime);
@@ -150,12 +143,6 @@ public class ExpandableAdapter extends
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-        // set background resource (target view ID: container)
-      /*  int bgResId;
-        bgResId = R.drawable.bg_item_normal_state;
-        holder.mContainer.setBackgroundResource(bgResId);*/
     }
 
     @Override

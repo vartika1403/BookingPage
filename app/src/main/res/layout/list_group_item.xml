@@ -1,72 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:clickable="true"
         android:background="#FAFAFA"
+        android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/morning_snack_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/morning_snack"
             android:background="@drawable/circle_background"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:src="@drawable/morning_snack" />
 
         <TextView
             android:id="@+id/text1"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/morning_snack_image"
-            android:layout_toEndOf="@id/morning_snack_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/morning_snack_image"
+            android:layout_toRightOf="@id/morning_snack_image"
+            android:textStyle="bold" />
 
-       <!-- <com.example.vartikasharma.bookingpage.ExpandableItemIndicator
-            android:id="@+id/indicator"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/red_arrow"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"/>-->
         <ImageView
             android:id="@+id/arrow_image"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/red_arrow"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp" />
-
+            android:background="@drawable/red_arrow" />
 
         <TextView
             android:id="@+id/slot_no_text"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/arrow_image"
             android:layout_toStartOf="@id/arrow_image"
-            android:textColor="@color/red_color_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/red_color_background" />
 
     </RelativeLayout>
 

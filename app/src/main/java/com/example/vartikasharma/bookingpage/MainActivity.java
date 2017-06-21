@@ -1,14 +1,12 @@
 package com.example.vartikasharma.bookingpage;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,12 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
-        Log.i(LOG_TAG, "apiservice, " + apiService.toString());
-
         Call<JsonElement> call = apiService.getBookingSlots(USER_NAME, API_KEY, VC, EXPERT_USERNAME, FORMAT);
-
-        Log.i(LOG_TAG, "url, " + call.request().url());
-
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(final Call<JsonElement> call, Response<JsonElement> response) {
@@ -77,17 +69,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().toString());
                 String resonseArray = "[" + response.body().getAsJsonObject().toString() + "]";
                 Log.i(LOG_TAG, "responseArray, " + response.body().getAsJsonObject().get("slots"));
-                // response.body().getAsJsonObject().get("slots");
                 BookingSlot bookingSlot = gson.fromJson(response.body().getAsJsonObject().toString(), BookingSlot.class);
                 Log.i(LOG_TAG, "slots are, " + bookingSlot.getSlots());
                 final HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap = bookingSlot.getSlots();
                 Log.i(LOG_TAG, "slotDate, " + slotDateObjectHashMap);
-                //SlotItem slotItem = slotDateObjectHashMap.get("2017-06-20").get("afternoon").get(0);
-                // Log.i(LOG_TAG, "slotItem, " + slotItem.getSlot_id());
                 setUpViewPager(viewPager, slotDateObjectHashMap);
                 bookingSlotTabLayout.setupWithViewPager(viewPager);
 
-               MainActivity.this.runOnUiThread(new Runnable() {
+                MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -112,15 +101,10 @@ public class MainActivity extends AppCompatActivity {
             mapKey.add(date);
         }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        for(int i = 0 ; i < slotDateObjectHashMap.size(); i++) {
+        for (int i = 0; i < slotDateObjectHashMap.size(); i++) {
             Log.i(LOG_TAG, "size, " + slotDateObjectHashMap.size());
             viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(i))), mapKey.get(i));
         }
-       /* viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
-        viewPagerAdapter.addFrag(new SecondDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(1))), "second");
-        viewPagerAdapter.addFrag(new ThirdDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(2))), "third");
-        viewPagerAdapter.addFrag(new FourthDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(3))), "fourth");
-*/
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.requestTransparentRegion(viewPager);
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -162,9 +146,7 @@ public class MainActivity extends AppCompatActivity {
         String month_name = month_date.format(dateValue);
         Log.i(LOG_TAG, "monthName, " + month_name);
         monthNameText.setText(month_name);
-
-
-        int i = 0 ;
+        int i = 0;
         for (String dateText : slotDateObjectHashMap.keySet()) {
             View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
