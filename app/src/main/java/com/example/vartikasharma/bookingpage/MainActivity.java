@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.month_name)
     /* package-local */ TextView monthNameText;
 
+    @BindView(R.id.progress_bar)
+    /* package-local */ ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             setUpTabLayout(slotDateObjectHashMap);
+                            progressBar.setVisibility(View.INVISIBLE);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -160,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.ENGLISH);
         String month_name = month_date.format(dateValue);
         monthNameText.setText(month_name);
-        int i = 0;
+        int i = slotDateObjectHashMap.size() -1;
         for (String dateText : slotDateObjectHashMap.keySet()) {
             View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
@@ -171,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             tabDayName.setText(dayOfWeek);
             tabText.setText(dateOfWeek);
             bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);
-            i++;
+            i--;
         }
     }
 }
