@@ -9,4 +9,7 @@
     <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
     <color name="bg_group_item_expanded_state">#ff88dd88</color>
     <color name="bg_group_item_expanded_pressed_state">#ff99cc99</color>
+    <color name="available_slot_background">#fff</color>
+    <color name="not_available_slot_background">#ccc</color>
+    <color name="red_color_background">#FFF44336</color>
 </resources>

@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/month_name"
         android:layout_marginTop="5dp"
-        android:background="#F7F3E2"
+        android:background="@color/available_slot_background"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -23,7 +23,7 @@
         android:layout_marginLeft="-10dp"
         android:layout_marginRight="-10dp"
         android:layout_marginTop="0dp"
-        android:background="#F7F3E2"
+        android:background="@color/available_slot_background"
         android:clipToPadding="false"
         app:tabGravity="fill"
         app:tabIndicatorHeight="2dp"

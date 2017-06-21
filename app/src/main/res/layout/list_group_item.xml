@@ -8,8 +8,9 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@color/not_available_slot_background"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         tools:ignore="UselessParent">
@@ -35,6 +36,7 @@
             android:id="@+id/indicator"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:background="@color/red_color_background"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"

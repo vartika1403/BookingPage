@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         String month_name = month_date.format(dateValue);
         Log.i(LOG_TAG, "monthName, " + month_name);
         monthNameText.setText(month_name);*/
+//        bookingSlotTabLayout.addTab();
         Map.Entry<String, HashMap<String, List<SlotItem>>> entry = slotDateObjectHashMap.entrySet().iterator().next();
         String key = entry.getKey();
         Log.i(LOG_TAG, "key, " + key);
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             tabText.setText(dateOfWeek);
 
             // tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favourite, 0, 0);
-            bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);
+            bookingSlotTabLayout.getTabAt(0).setCustomView(tabOne);
             i++;
         }
     }

@@ -1,10 +1,10 @@
 package com.example.vartikasharma.bookingpage;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,9 +13,13 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ExpandableAdapter extends
@@ -26,14 +30,12 @@ public class ExpandableAdapter extends
     private List<String> slots = new ArrayList<>();
     private HashMap<String, List<SlotItem>> childItems = new HashMap<>();
     private int availableSlots = 0;
-    private RecyclerViewExpandableItemManager mExpandableItemManager;
+    private HashMap<String, Integer> availableSlotNo = new HashMap<>();
 
     public ExpandableAdapter(RecyclerViewExpandableItemManager recyclerViewExpandableItemManager, List<String> slots, HashMap<String, List<SlotItem>> childItems) {
 
         this.slots = slots;
         this.childItems = childItems;
-        // ExpandableItemAdapter requires stable ID, and also
-        // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
         for(int i = 0; i < slots.size(); i++) {
             List<SlotItem> slotItemList = childItems.get(slots.get(i));
@@ -42,6 +44,8 @@ public class ExpandableAdapter extends
                     availableSlots++;
                 }
             }
+            availableSlotNo.put(slots.get(i), availableSlots);
+            availableSlots = 0;
         }
     }
 
@@ -96,7 +100,7 @@ public class ExpandableAdapter extends
 
         // set text
         holder.mTextView.setText(item);
-        holder.slotNoText.setText(" " + availableSlots + " " + "Slots available");
+        holder.slotNoText.setText(" " + availableSlotNo.get(item) + " " + "Slots available");
 
         // mark as clickable
         holder.itemView.setClickable(true);
@@ -127,7 +131,21 @@ public class ExpandableAdapter extends
         // group item
         final SlotItem item = childItems.get(slots.get(groupPosition)).get(childPosition);
         // set text
-        holder.mTextView.setText(" " + item.getSlot_id());
+        try {
+            String strDateFormat = "hh:mm:ss a";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(strDateFormat);
+            Date startDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss+00:00", Locale.US).parse(item.getStart_time());
+            String startTime =  simpleDateFormat.format(startDateTime);
+            Log.i(LOG_TAG, "start time, "  + startTime);
+            Log.i(LOG_TAG, "startDateTime, " + startDateTime.getTime());
+            Date endDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss+00:00", Locale.US).parse(item.getEnd_time());
+            String endTime = simpleDateFormat.format(endDateTime);
+            Log.i(LOG_TAG, "endTime, " + endTime);
+            holder.mTextView.setText(" " + startTime + "-" + endTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         // set background resource (target view ID: container)
         int bgResId;
