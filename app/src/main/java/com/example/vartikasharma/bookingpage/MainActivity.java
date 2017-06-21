@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 setUpViewPager(viewPager, slotDateObjectHashMap);
                 bookingSlotTabLayout.setupWithViewPager(viewPager);
 
-                MainActivity.this.runOnUiThread(new Runnable() {
+               MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -112,11 +112,15 @@ public class MainActivity extends AppCompatActivity {
             mapKey.add(date);
         }
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
+        for(int i = 0 ; i < slotDateObjectHashMap.size(); i++) {
+            Log.i(LOG_TAG, "size, " + slotDateObjectHashMap.size());
+            viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(i))), mapKey.get(i));
+        }
+       /* viewPagerAdapter.addFrag(new FirstDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(0))), "first");
         viewPagerAdapter.addFrag(new SecondDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(1))), "second");
         viewPagerAdapter.addFrag(new ThirdDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(2))), "third");
         viewPagerAdapter.addFrag(new FourthDateBookingSlot(slotDateObjectHashMap.get(mapKey.get(3))), "fourth");
-
+*/
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.requestTransparentRegion(viewPager);
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -150,15 +154,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpTabLayout(HashMap<String, HashMap<String, List<SlotItem>>> slotDateObjectHashMap) throws ParseException {
-        // Add Tab
-     /*  HashMap.Entry<String, Map<String, List<SlotItem>>> entrySet  = (HashMap.Entry<String, Map<String, List<SlotItem>>>) slotDateObjectHashMap.entrySet();
-        String date = entrySet.getKey().toString();
-        Log.i(LOG_TAG,"firstDate, " + date);
-        Date dateValue = new SimpleDateFormat("yyyy-mm-dd").parse(date);
-        String month_name = month_date.format(dateValue);
-        Log.i(LOG_TAG, "monthName, " + month_name);
-        monthNameText.setText(month_name);*/
-//        bookingSlotTabLayout.addTab();
         Map.Entry<String, HashMap<String, List<SlotItem>>> entry = slotDateObjectHashMap.entrySet().iterator().next();
         String key = entry.getKey();
         Log.i(LOG_TAG, "key, " + key);
@@ -169,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         monthNameText.setText(month_name);
 
 
-        int i = 0;
+        int i = 0 ;
         for (String dateText : slotDateObjectHashMap.keySet()) {
             View tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             TextView tabText = (TextView) tabOne.findViewById(R.id.tab_day_no_text);
@@ -181,9 +176,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "dateOfWeek, " + dateOfWeek);
             tabDayName.setText(dayOfWeek);
             tabText.setText(dateOfWeek);
-
-            // tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favourite, 0, 0);
-            bookingSlotTabLayout.getTabAt(0).setCustomView(tabOne);
+            bookingSlotTabLayout.getTabAt(i).setCustomView(tabOne);
             i++;
         }
     }

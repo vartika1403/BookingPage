@@ -99,7 +99,8 @@ public class ExpandableAdapter extends
         final String item = slots.get(groupPosition);
 
         // set text
-        holder.mTextView.setText(item);
+        String stringText = item.substring(0,1).toUpperCase() + item.substring(1);
+        holder.mTextView.setText(stringText) ;
         holder.slotNoText.setText(" " + availableSlotNo.get(item) + " " + "Slots available");
 
         // mark as clickable
@@ -142,6 +143,11 @@ public class ExpandableAdapter extends
             String endTime = simpleDateFormat.format(endDateTime);
             Log.i(LOG_TAG, "endTime, " + endTime);
             holder.mTextView.setText(" " + startTime + "-" + endTime);
+            if (item.is_booked()) {
+                holder.mContainer.setBackgroundResource(R.color.not_available_slot_background);
+            } else {
+                holder.mContainer.setBackgroundResource(R.color.available_slot_background);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
